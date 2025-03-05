@@ -1,4 +1,4 @@
-import { Ingredient } from "./ingredient.model";
+import { Ingredient } from "./ingredient.model.ts";
 
 export interface IngredientQuantity {
     ingredient: Ingredient;
@@ -8,5 +8,7 @@ export interface IngredientQuantity {
 export interface Recipe {
     id: number;
     name: string;
+    category: string;
+    description: string;
     ingredients: IngredientQuantity[];
 }
