@@ -16,12 +16,24 @@
                   }
               },
               {
-                  "name": "Obtenir un ingr\u00e9dient par ID",
-                  "request": {
-                      "method": "GET",
-                      "url": "http://localhost:8000/ingredients?id=PUT_INGREDIENT_ID_HERE"
-                  }
-              },
+                "name": "Obtenir un ingrédient par ID",
+                "request": {
+                    "method": "GET",
+                    "url": {
+                        "raw": "http://localhost:8000/ingredients/PUT_INGREDIENT_ID_HERE",
+                        "protocol": "http",
+                        "host": ["localhost"],
+                        "port": "8000",
+                        "path": ["ingredients", ":id"],
+                        "variable": [
+                            {
+                                "key": "id",
+                                "value": "PUT_INGREDIENT_ID_HERE"
+                            }
+                        ]
+                    }
+                }
+            },
               {
                   "name": "Cr\u00e9er un ingr\u00e9dient",
                   "request": {

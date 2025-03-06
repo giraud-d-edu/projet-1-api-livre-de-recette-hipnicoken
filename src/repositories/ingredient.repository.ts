@@ -18,7 +18,7 @@ export const IngredientRepository = {
     try {
         const objectId = new ObjectId(id);
         const ingredient = await collection.findOne({ _id: objectId });
-        
+
         if (!ingredient) {
             console.warn(`⚠️ Aucun ingrédient trouvé avec l'ID ${id}`);
             return null; // Retourne `null` si aucun ingrédient trouvé
