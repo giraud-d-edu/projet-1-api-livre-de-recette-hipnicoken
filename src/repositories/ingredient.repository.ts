@@ -6,43 +6,65 @@ const collection = db.collection<IngredientDBO>("ingredients");
 
 export const IngredientRepository = {
   async findAll() {
-    return await collection.find().toArray();
+    try {
+      return await collection.find().toArray();
+    } catch (error) {
+      console.error("❌ Erreur lors de la récupération de tous les ingrédients :", error);
+      throw new Error("Erreur interne du serveur lors de la récupération des ingrédients.");
+    }
   },
 
   async findById(id: string) {
     try {
       const objectId = new ObjectId(id);
-      return await collection.findOne({ _id: objectId });
+      const ingredient = await collection.findOne({ _id: objectId });
+      if (!ingredient) throw new Error("Ingrédient non trouvé.");
+      return ingredient;
     } catch (error) {
-      console.error("Erreur lors de la conversion de l'ID en ObjectId:", error);
-      return null;
+      console.error(`❌ Erreur lors de la recherche de l'ingrédient avec l'ID ${id} :`, error);
+      throw new Error("ID invalide ou ingrédient introuvable.");
     }
   },
 
   async findByName(name: string) {
-    return await collection.findOne({ name });
+    try {
+      const ingredient = await collection.findOne({ name });
+      return ingredient;
+    } catch (error) {
+      console.error(`❌ Erreur lors de la recherche de l'ingrédient avec le nom ${name} :`, error);
+      throw new Error("Erreur interne du serveur lors de la recherche par nom.");
+    }
   },
 
   async insert(ingredient: Omit<IngredientDBO, "_id" | "createdAt" | "updatedAt">) {
-    // ✅ Ajout automatique de `_id`, `createdAt`, et `updatedAt`
-    const newIngredient: IngredientDBO = {
-      ...ingredient,
-      _id: new ObjectId(),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
+    try {
+      const existing = await this.findByName(ingredient.name);
+      if (existing) throw new Error("Cet ingrédient existe déjà.");
 
-    await collection.insertOne(newIngredient);
-    return newIngredient;
+      const newIngredient: IngredientDBO = {
+        ...ingredient,
+        _id: new ObjectId(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      await collection.insertOne(newIngredient);
+      return newIngredient;
+    } catch (error) {
+      console.error(`❌ Erreur lors de l'insertion de l'ingrédient ${ingredient.name} :`, error);
+      throw new Error("Erreur interne du serveur lors de la création de l'ingrédient.");
+    }
   },
 
   async delete(id: string) {
     try {
       const objectId = new ObjectId(id);
-      return await collection.deleteOne({ _id: objectId });
+      const deleted = await collection.deleteOne({ _id: objectId });
+      if (!deleted) throw new Error("Aucun ingrédient supprimé, ID introuvable.");
+      return { message: "Ingrédient supprimé avec succès." };
     } catch (error) {
-      console.error("Erreur lors de la conversion de l'ID en ObjectId:", error);
-      return null;
+      console.error(`❌ Erreur lors de la suppression de l'ingrédient avec l'ID ${id} :`, error);
+      throw new Error("Erreur interne du serveur lors de la suppression de l'ingrédient.");
     }
   },
 };
