@@ -1,301 +1,140 @@
 {
-    "info": {
+  "info": {
       "_postman_id": "12345678-abcd-efgh-ijkl-1234567890ab",
       "name": "Projet Recettes API",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-    },
-    "item": [
+  },
+  "item": [
       {
-        "name": "Ingrédients",
-        "item": [
-          {
-            "name": "Obtenir tous les ingrédients",
-            "request": {
-              "method": "GET",
-              "header": [],
-              "url": {
-                "raw": "http://localhost:8000/ingredients",
-                "protocol": "http",
-                "host": [
-                  "localhost"
-                ],
-                "port": "8000",
-                "path": [
-                  "ingredients"
-                ]
-              }
-            }
-          },
-          {
-            "name": "Créer un ingrédient",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"name\": \"Exemple Ingrédient\"\n}"
-              },
-              "url": {
-                "raw": "http://localhost:8000/ingredients",
-                "protocol": "http",
-                "host": [
-                  "localhost"
-                ],
-                "port": "8000",
-                "path": [
-                  "ingredients"
-                ]
-              }
-            }
-          },
-          {
-            "name": "Supprimer un ingrédient",
-            "request": {
-              "method": "DELETE",
-              "header": [],
-              "url": {
-                "raw": "http://localhost:8000/ingredients?id=PUT_INGREDIENT_ID_HERE",
-                "protocol": "http",
-                "host": [
-                  "localhost"
-                ],
-                "port": "8000",
-                "path": [
-                  "ingredients"
-                ],
-                "query": [
-                  {
-                    "key": "id",
-                    "value": "PUT_INGREDIENT_ID_HERE"
+          "name": "Ingr\u00e9dients",
+          "item": [
+              {
+                  "name": "Obtenir tous les ingr\u00e9dients",
+                  "request": {
+                      "method": "GET",
+                      "url": "http://localhost:8000/ingredients"
                   }
-                ]
+              },
+              {
+                  "name": "Obtenir un ingr\u00e9dient par ID",
+                  "request": {
+                      "method": "GET",
+                      "url": "http://localhost:8000/ingredients?id=PUT_INGREDIENT_ID_HERE"
+                  }
+              },
+              {
+                  "name": "Cr\u00e9er un ingr\u00e9dient",
+                  "request": {
+                      "method": "POST",
+                      "header": [
+                          {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                          }
+                      ],
+                      "body": {
+                          "mode": "raw",
+                          "raw": "{\n    \"name\": \"Exemple Ingr\\u00e9dient\"\n}"
+                      },
+                      "url": "http://localhost:8000/ingredients"
+                  }
+              },
+              {
+                  "name": "Supprimer un ingr\u00e9dient",
+                  "request": {
+                      "method": "DELETE",
+                      "url": "http://localhost:8000/ingredients?id=PUT_INGREDIENT_ID_HERE"
+                  }
               }
-            }
-          }
-        ]
+          ]
       },
       {
-        "name": "Recettes",
-        "item": [
-          {
-            "name": "Obtenir toutes les recettes",
-            "request": {
-              "method": "GET",
-              "header": [],
-              "url": {
-                "raw": "http://localhost:8000/recipes",
-                "protocol": "http",
-                "host": [
-                  "localhost"
-                ],
-                "port": "8000",
-                "path": [
-                  "recipes"
-                ]
-              }
-            }
-          },
-          {
-            "name": "Obtenir une recette par ID",
-            "request": {
-              "method": "GET",
-              "header": [],
-              "url": {
-                "raw": "http://localhost:8000/recipes?id=PUT_RECIPE_ID_HERE",
-                "protocol": "http",
-                "host": [
-                  "localhost"
-                ],
-                "port": "8000",
-                "path": [
-                  "recipes"
-                ],
-                "query": [
-                  {
-                    "key": "id",
-                    "value": "PUT_RECIPE_ID_HERE"
+          "name": "Recettes",
+          "item": [
+              {
+                  "name": "Obtenir toutes les recettes",
+                  "request": {
+                      "method": "GET",
+                      "url": "http://localhost:8000/recipes"
                   }
-                ]
-              }
-            }
-          },
-          {
-            "name": "Obtenir une recette par titre",
-            "request": {
-              "method": "GET",
-              "header": [],
-              "url": {
-                "raw": "http://localhost:8000/recipes?title=Lasagnes",
-                "protocol": "http",
-                "host": [
-                  "localhost"
-                ],
-                "port": "8000",
-                "path": [
-                  "recipes"
-                ],
-                "query": [
-                  {
-                    "key": "title",
-                    "value": "Lasagnes"
-                  }
-                ]
-              }
-            }
-          },
-          {
-            "name": "Obtenir des recettes par catégorie",
-            "request": {
-              "method": "GET",
-              "header": [],
-              "url": {
-                "raw": "http://localhost:8000/recipes?category=Plat",
-                "protocol": "http",
-                "host": [
-                  "localhost"
-                ],
-                "port": "8000",
-                "path": [
-                  "recipes"
-                ],
-                "query": [
-                  {
-                    "key": "category",
-                    "value": "Plat"
-                  }
-                ]
-              }
-            }
-          },
-          {
-            "name": "Obtenir des recettes par ID ingrédient",
-            "request": {
-              "method": "GET",
-              "header": [],
-              "url": {
-                "raw": "http://localhost:8000/recipes?ingredient=PUT_INGREDIENT_ID_HERE",
-                "protocol": "http",
-                "host": [
-                  "localhost"
-                ],
-                "port": "8000",
-                "path": [
-                  "recipes"
-                ],
-                "query": [
-                  {
-                    "key": "ingredientID",
-                    "value": "PUT_INGREDIENT_ID_HERE"
-                  }
-                ]
-              }
-            }
-          },
-          {
-            "name": "Obtenir des recettes par nom d'ingrédient",
-            "request": {
-              "method": "GET",
-              "header": [],
-              "url": {
-                "raw": "http://localhost:8000/recipes?ingredientName=Tomates",
-                "protocol": "http",
-                "host": ["localhost"],
-                "port": "8000",
-                "path": ["recipes"],
-                "query": [
-                  {
-                    "key": "ingredientName",
-                    "value": "Tomates"
-                  }
-                ]
-              }
-            }
-          },          
-          
-          {
-          "name": "Créer une recette ",
-          "request": {
-            "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"title\": \"Risotto aux Champignons\",\n  \"description\": \"Un risotto crémeux avec des champignons frais.\",\n  \"category\": \"Plat\",\n  \"ingredients\": [\n    { \"ingredientName\": \"Champignons\", \"quantity\": \"200\" },\n    { \"ingredientName\": \"Riz Arborio\", \"quantity\": \"150\" },\n    { \"ingredientName\": \"Bouillon de légumes\", \"quantity\": \"500\" }\n  ],\n  \"instructions\": \"Faire revenir les champignons, ajouter le riz et déglacer avec le bouillon, puis laisser cuire en remuant.\"\n}"
-            },
-            "url": {
-              "raw": "http://localhost:8000/recipes",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "8000",
-              "path": ["recipes"]
-            }
-          }
-        },
-          {
-            "name": "Modifier une recette",
-            "request": {
-              "method": "PUT",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"title\": \"Lasagnes Revisitées\",\n  \"description\": \"Mise à jour de la recette\",\n  \"category\": \"Plat\"\n}"
               },
-              "url": {
-                "raw": "http://localhost:8000/recipes?id=PUT_RECIPE_ID_HERE",
-                "protocol": "http",
-                "host": [
-                  "localhost"
-                ],
-                "port": "8000",
-                "path": [
-                  "recipes"
-                ],
-                "query": [
-                  {
-                    "key": "id",
-                    "value": "PUT_RECIPE_ID_HERE"
+              {
+                  "name": "Obtenir une recette par ID",
+                  "request": {
+                      "method": "GET",
+                      "url": "http://localhost:8000/recipes?id=PUT_RECIPE_ID_HERE"
                   }
-                ]
-              }
-            }
-          },
-          {
-            "name": "Supprimer une recette",
-            "request": {
-              "method": "DELETE",
-              "header": [],
-              "url": {
-                "raw": "http://localhost:8000/recipes?id=PUT_RECIPE_ID_HERE",
-                "protocol": "http",
-                "host": [
-                  "localhost"
-                ],
-                "port": "8000",
-                "path": [
-                  "recipes"
-                ],
-                "query": [
-                  {
-                    "key": "id",
-                    "value": "PUT_RECIPE_ID_HERE"
+              },
+              {
+                  "name": "Obtenir une recette par titre",
+                  "request": {
+                      "method": "GET",
+                      "url": "http://localhost:8000/recipes?title=Lasagnes"
                   }
-                ]
+              },
+              {
+                  "name": "Obtenir des recettes par cat\u00e9gorie",
+                  "request": {
+                      "method": "GET",
+                      "url": "http://localhost:8000/recipes?category=Plat"
+                  }
+              },
+              {
+                  "name": "Obtenir des recettes par ID d'ingr\u00e9dient",
+                  "request": {
+                      "method": "GET",
+                      "url": "http://localhost:8000/recipes?ingredient=PUT_INGREDIENT_ID_HERE"
+                  }
+              },
+              {
+                  "name": "Obtenir des recettes par nom d'ingr\u00e9dient",
+                  "request": {
+                      "method": "GET",
+                      "url": "http://localhost:8000/recipes?ingredientName=Tomates"
+                  }
+              },
+              {
+                  "name": "Cr\u00e9er une recette",
+                  "request": {
+                      "method": "POST",
+                      "header": [
+                          {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                          }
+                      ],
+                      "body": {
+                          "mode": "raw",
+                          "raw": "{\n    \"title\": \"Risotto aux Champignons\",\n    \"description\": \"Un risotto cr\\u00e9meux avec des champignons frais.\",\n    \"category\": \"Plat\",\n    \"ingredients\": [\n        {\n            \"ingredientName\": \"Champignons\",\n            \"quantity\": \"200\"\n        },\n        {\n            \"ingredientName\": \"Riz Arborio\",\n            \"quantity\": \"150\"\n        },\n        {\n            \"ingredientName\": \"Bouillon de l\\u00e9gumes\",\n            \"quantity\": \"500\"\n        }\n    ],\n    \"instructions\": \"Faire revenir les champignons, ajouter le riz et d\\u00e9glacer avec le bouillon, puis laisser cuire en remuant.\"\n}"
+                      },
+                      "url": "http://localhost:8000/recipes"
+                  }
+              },
+              {
+                  "name": "Modifier une recette",
+                  "request": {
+                      "method": "PUT",
+                      "header": [
+                          {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                          }
+                      ],
+                      "body": {
+                          "mode": "raw",
+                          "raw": "{\n    \"title\": \"Lasagnes Revisit\\u00e9es\",\n    \"description\": \"Mise \\u00e0 jour de la recette\",\n    \"category\": \"Plat\"\n}"
+                      },
+                      "url": "http://localhost:8000/recipes?id=PUT_RECIPE_ID_HERE"
+                  }
+              },
+              {
+                  "name": "Supprimer une recette",
+                  "request": {
+                      "method": "DELETE",
+                      "url": "http://localhost:8000/recipes?id=PUT_RECIPE_ID_HERE"
+                  }
               }
-            }
-          }
-        ]
+          ]
       }
-    ]
-  }
-  
+  ]
+}

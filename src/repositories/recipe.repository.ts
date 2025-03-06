@@ -1,5 +1,5 @@
 import { db } from "../db.ts";
-import { RecipeDBO } from "../models/dbo/recipe.dbo.ts";
+import { RecipeDBO } from "./dbo/recipe.dbo.ts";
 import { ObjectId } from "../../deps.ts";
 
 const collection = db.collection<Omit<RecipeDBO, "_id"> & { _id?: ObjectId }>("recipes");
@@ -28,14 +28,13 @@ export const RecipeRepository = {
     return await collection.find({ category }).toArray();
   },
 
-  async findByIngredient(ingredient: string) {
+  async findByIngredient(ingredientId: string) {
     try {
-      const ingredientObjId = new ObjectId(ingredient);
-      // Cast du filtre en any pour éviter l'erreur de typage
-      return await collection.find({ "ingredients.ingredientId": ingredientObjId } as any).toArray();
+        const objectId = new ObjectId(ingredientId);
+        return await collection.find({ ingredients: { $elemMatch: { ingredientId: objectId } } }).toArray();
     } catch (error) {
-      console.error("Erreur lors de la conversion de l'ID d'ingrédient en ObjectId:", error);
-      return [];
+        console.error(`❌ Erreur lors de la recherche de recettes avec l'ID ingrédient ${ingredientId} :`, error);
+        return [];
     }
   },
   

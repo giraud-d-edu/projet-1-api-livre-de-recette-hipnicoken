@@ -1,5 +1,5 @@
 import { RecipeService } from "../services/recipe.service.ts";
-import { RecipeSchema } from "../models/dto/recipe.dto.ts";
+import { RecipeSchema } from "./dto/recipe.dto.ts";
 import { Context } from "../../deps.ts";
 import { ObjectId } from "../../deps.ts";
 import { IngredientService } from "../services/ingredient.service.ts";
@@ -33,15 +33,15 @@ export const RecipeController = {
         ctx.response.body = { error: "Category requis" };
       }
     } else if (params.has("ingredientName")) {
-      // Recherche par nom d'ingrédient
       const ingredientName = params.get("ingredientName");
       if (ingredientName) {
-        ctx.response.body = await RecipeService.getByIngredientName(ingredientName);
+          ctx.response.body = await RecipeService.getByIngredientName(ingredientName);
       } else {
-        ctx.response.status = 400;
-        ctx.response.body = { error: "Ingredient name requis" };
+          ctx.response.status = 400;
+          ctx.response.body = { error: "Ingredient name requis" };
       }
-    } else if (params.has("ingredient")) {
+      return;
+  } else if (params.has("ingredient")) {
       // Recherche par id d'ingrédient
       const ingredient = params.get("ingredient");
       if (ingredient) {

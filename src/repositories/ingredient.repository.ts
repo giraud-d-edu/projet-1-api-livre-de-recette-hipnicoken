@@ -1,5 +1,5 @@
 import { db } from "../db.ts";
-import { IngredientDBO } from "../models/dbo/ingredient.dbo.ts";
+import { IngredientDBO } from "./dbo/ingredient.dbo.ts"; 
 import { ObjectId } from "../../deps.ts";
 
 const collection = db.collection<IngredientDBO>("ingredients");
@@ -9,30 +9,34 @@ export const IngredientRepository = {
     try {
       return await collection.find().toArray();
     } catch (error) {
-      console.error("❌ Erreur lors de la récupération de tous les ingrédients :", error);
-      throw new Error("Erreur interne du serveur lors de la récupération des ingrédients.");
+      console.error("Erreur lors de la récupération des ingrédients :", error);
+      throw new Error("Erreur interne lors de la récupération des ingrédients.");
     }
   },
 
   async findById(id: string) {
     try {
-      const objectId = new ObjectId(id);
-      const ingredient = await collection.findOne({ _id: objectId });
-      if (!ingredient) throw new Error("Ingrédient non trouvé.");
-      return ingredient;
+        const objectId = new ObjectId(id);
+        const ingredient = await collection.findOne({ _id: objectId });
+        
+        if (!ingredient) {
+            console.warn(`⚠️ Aucun ingrédient trouvé avec l'ID ${id}`);
+            return null; // Retourne `null` si aucun ingrédient trouvé
+        }
+
+        return ingredient;
     } catch (error) {
-      console.error(`❌ Erreur lors de la recherche de l'ingrédient avec l'ID ${id} :`, error);
-      throw new Error("ID invalide ou ingrédient introuvable.");
+        console.error(`❌ Erreur lors de la recherche de l'ingrédient avec l'ID ${id} :`, error);
+        return null; // Retourne `null` en cas d'erreur au lieu de tous les ingrédients
     }
-  },
+},
 
   async findByName(name: string) {
     try {
-      const ingredient = await collection.findOne({ name });
-      return ingredient;
+      return await collection.findOne({ name });
     } catch (error) {
-      console.error(`❌ Erreur lors de la recherche de l'ingrédient avec le nom ${name} :`, error);
-      throw new Error("Erreur interne du serveur lors de la recherche par nom.");
+      console.error(`Erreur lors de la recherche de l'ingrédient ${name} :`, error);
+      throw new Error("Erreur interne lors de la recherche par nom.");
     }
   },
 
@@ -51,20 +55,18 @@ export const IngredientRepository = {
       await collection.insertOne(newIngredient);
       return newIngredient;
     } catch (error) {
-      console.error(`❌ Erreur lors de l'insertion de l'ingrédient ${ingredient.name} :`, error);
-      throw new Error("Erreur interne du serveur lors de la création de l'ingrédient.");
+      console.error(`Erreur lors de l'insertion de l'ingrédient ${ingredient.name} :`, error);
+      throw new Error("Erreur interne lors de la création de l'ingrédient.");
     }
   },
 
   async delete(id: string) {
     try {
       const objectId = new ObjectId(id);
-      const deleted = await collection.deleteOne({ _id: objectId });
-      if (!deleted) throw new Error("Aucun ingrédient supprimé, ID introuvable.");
-      return { message: "Ingrédient supprimé avec succès." };
+      return await collection.deleteOne({ _id: objectId });
     } catch (error) {
-      console.error(`❌ Erreur lors de la suppression de l'ingrédient avec l'ID ${id} :`, error);
-      throw new Error("Erreur interne du serveur lors de la suppression de l'ingrédient.");
+      console.error(`Erreur lors de la suppression de l'ingrédient ${id} :`, error);
+      throw new Error("Erreur interne lors de la suppression.");
     }
   },
 };
