@@ -28,28 +28,28 @@ projet-1-api-livre-de-recette-hipnicoken/
 │   ├── controllers/
 │   │   ├── ingredient.controller.ts
 │   │   ├── recipe.controller.ts
-│   ├── models/
-│   │   ├── dbo/
-│   │   │   ├── ingredient.dbo.ts
-│   │   │   ├── recipe.dbo.ts
 │   │   ├── dto/
 │   │       ├── ingredient.dto.ts
 │   │       ├── recipe.dto.ts
+│   ├── models/
+│   │   ├── ingredient.model.ts
+│   │   ├── recipe.model.ts
 │   ├── repositories/
 │   │   ├── ingredient.repository.ts
 │   │   ├── recipe.repository.ts
+│   │   ├── dbo/
+│   │   │   ├── ingredient.dbo.ts
+│   │   │   ├── recipe.dbo.ts
 │   ├── routes/
 │   │   ├── ingredient.routes.ts
 │   │   ├── recipe.routes.ts
 │   ├── services/
 │       ├── ingredient.service.ts
 │       ├── recipe.service.ts
-├── tests/
-│   ├── ingredient.test.ts
-│   ├── recipe.test.ts
 ├── deps.ts
 ├── main.ts
 ├── deno.json
+├── postman_collection.json
 ├── deno.lock
 ├── README.md
 
@@ -62,16 +62,8 @@ projet-1-api-livre-de-recette-hipnicoken/
     cd projet-1-api-livre-de-recette-hipnicoken
     ```
 
-2. **Configurer les variables d'environnement :**
 
-    Créez un fichier `.env` à la racine du projet et ajoutez-y les variables suivantes :
-
-    ```env
-    MONGO_URI=mongodb+srv://<username>:<password>@<cluster-url>/recettes_db?retryWrites=true&w=majority&appName=projetrecettes
-    MONGO_DB_NAME=recettes_db
-    ```
-
-3. **Installer les dépendances :**
+2. **Installer les dépendances :**
 
     ```bash
     deno task start
@@ -89,7 +81,7 @@ projet-1-api-livre-de-recette-hipnicoken/
 
 2. **Tester les routes avec Postman :**
 
-    Importez le fichier [recipes.json](http://_vscodecontentref_/21) dans Postman pour tester les différentes routes de l'API.
+    Importez le fichier [postman_collection.json] dans Postman pour tester les différentes routes de l'API.
 
 ## Routes de l'API
 
@@ -106,9 +98,10 @@ projet-1-api-livre-de-recette-hipnicoken/
 
 - **GET /recipes** : Récupérer toutes les recettes.
 - **GET /recipes/:id** : Récupérer une recette par ID.
-- **POST /recipes** : Créer une nouvelle recette.
-- **DELETE /recipes/:id** : Supprimer une recette par ID.
 - **GET /recipes?title=...** : Rechercher une recette par titre.
 - **GET /recipes?category=...** : Rechercher une recette par catégorie.
-- **GET /recipes?ingredientName=...** : Rechercher une recette par ingrédient (nom).
+- **GET /recipes?ingredientName=...** : Rechercher une recette par nom    d'ingredient.
 - **PUT /recipes/** : Mettre à jour une recette.
+- **POST /recipes** : Créer une nouvelle recette.
+- **DELETE /recipes/:id** : Supprimer une recette par ID.
+
