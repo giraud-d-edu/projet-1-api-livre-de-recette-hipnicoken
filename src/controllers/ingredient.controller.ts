@@ -14,7 +14,8 @@ export const IngredientController = {
   },
 
   async getById(ctx: Context) {
-    const id = ctx.request.url.searchParams.get("id");
+    const id = ctx.params.id; // ✅ Récupérer l'ID depuis l'URL dynamique "/ingredients/:id"
+    
     if (!id) {
         ctx.response.status = 400;
         ctx.response.body = { error: "ID requis" };
