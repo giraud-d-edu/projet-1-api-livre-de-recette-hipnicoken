@@ -173,7 +173,7 @@
             }
           },
           {
-            "name": "Obtenir des recettes par ingrédient",
+            "name": "Obtenir des recettes par ID ingrédient",
             "request": {
               "method": "GET",
               "header": [],
@@ -189,13 +189,33 @@
                 ],
                 "query": [
                   {
-                    "key": "ingredient",
+                    "key": "ingredientID",
                     "value": "PUT_INGREDIENT_ID_HERE"
                   }
                 ]
               }
             }
           },
+          {
+            "name": "Obtenir des recettes par nom d'ingrédient",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "http://localhost:8000/recipes?ingredientName=Tomates",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "8000",
+                "path": ["recipes"],
+                "query": [
+                  {
+                    "key": "ingredientName",
+                    "value": "Tomates"
+                  }
+                ]
+              }
+            }
+          },          
           {
             "name": "Créer une recette",
             "request": {

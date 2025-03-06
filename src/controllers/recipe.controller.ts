@@ -31,6 +31,14 @@ export const RecipeController = {
         ctx.response.status = 400;
         ctx.response.body = { error: "Category requis" };
       }
+    } else if (params.has("ingredientName")) {  // Nouveau cas pour la recherche par nom d'ingrédient
+      const ingredientName = params.get("ingredientName");
+      if (ingredientName) {
+        ctx.response.body = await RecipeService.getByIngredientName(ingredientName);
+      } else {
+        ctx.response.status = 400;
+        ctx.response.body = { error: "Ingredient name requis" };
+      }
     } else if (params.has("ingredient")) {
       const ingredient = params.get("ingredient");
       if (ingredient) {

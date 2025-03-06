@@ -1,4 +1,5 @@
 import { RecipeRepository } from "../repositories/recipe.repository.ts";
+import { IngredientRepository } from "../repositories/ingredient.repository.ts"; // Assure-toi que ce fichier existe et a une méthode findByName
 import { RecipeDBO } from "../models/dbo/recipe.dbo.ts";
 
 export const RecipeService = {
@@ -20,6 +21,16 @@ export const RecipeService = {
 
   async getByIngredient(ingredient: string) {
     return await RecipeRepository.findByIngredient(ingredient);
+  },
+
+  async getByIngredientName(name: string) {
+    // Recherche l'ingrédient par nom dans la collection des ingrédients
+    const ingredient = await IngredientRepository.findByName(name);
+    if (!ingredient) {
+      return []; // Aucun ingrédient trouvé, retourne un tableau vide
+    }
+    // Utilise l'ID de l'ingrédient trouvé pour rechercher les recettes
+    return await RecipeRepository.findByIngredient(ingredient._id.toString());
   },
 
   async create(data: Omit<RecipeDBO, "_id" | "createdAt" | "updatedAt">) {
