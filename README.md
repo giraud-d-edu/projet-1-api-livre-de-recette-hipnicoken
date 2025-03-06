@@ -16,7 +16,6 @@ Ce projet est une API de gestion de recettes de cuisine, développée dans le ca
 - **Oak** : Framework HTTP pour Deno.
 - **MongoDB Atlas** : Base de données NoSQL.
 - **Zod** : Validation des schémas d'objets.
-- **Dotenv** : Gestion des variables d'environnement.
 - **Newman** : Exécution automatisée des tests Postman.
 
 ## 📂 Structure du Projet

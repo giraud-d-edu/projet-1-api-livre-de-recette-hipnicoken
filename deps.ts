@@ -6,6 +6,3 @@ export { MongoClient, ObjectId } from "npm:mongodb@6.1.0";
 
 // Zod (Validation des données)
 export { z } from "https://deno.land/x/zod/mod.ts";
-
-// Dotenv (Gestion des variables d'environnement)
-export * as dotenv from "https://deno.land/x/dotenv/mod.ts";
