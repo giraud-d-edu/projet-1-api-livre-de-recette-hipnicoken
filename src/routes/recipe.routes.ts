@@ -6,7 +6,8 @@ const router = new Router();
 router
 .get("/recipes", RecipeController.getAll)
 .get("/recipes/:id", RecipeController.getById)
-.post("/recipes", RecipeController.create) // ✅ Assure-toi que cette ligne est présente
+.post("/recipes", RecipeController.create)
+.put("/recipes", RecipeController.update)
 .delete("/recipes", RecipeController.delete);
 
 export default router;

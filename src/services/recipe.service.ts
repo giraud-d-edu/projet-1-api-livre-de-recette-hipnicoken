@@ -14,11 +14,19 @@ export const RecipeService = {
     return await RecipeRepository.findByTitle(title);
   },
 
+  async getByCategory(category: string) {
+    return await RecipeRepository.findByCategory(category);
+  },
+
+  async getByIngredient(ingredient: string) {
+    return await RecipeRepository.findByIngredient(ingredient);
+  },
+
   async create(data: Omit<RecipeDBO, "_id" | "createdAt" | "updatedAt">) {
     const existing = await RecipeRepository.findByTitle(data.title);
     if (existing) throw new Error("Cette recette existe déjà.");
 
-    return await RecipeRepository.insert(data); 
+    return await RecipeRepository.insert(data);
   },
 
   async update(id: string, data: Partial<RecipeDBO>) {

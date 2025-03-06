@@ -20,12 +20,30 @@ export const RecipeRepository = {
   },
 
   async findByTitle(title: string) {
-    return await collection.findOne({ title }); 
+    return await collection.findOne({ title });
   },
+
+  async findByCategory(category: string) {
+    // Retourne toutes les recettes dont la catégorie correspond
+    return await collection.find({ category }).toArray();
+  },
+
+  async findByIngredient(ingredient: string) {
+    try {
+      const ingredientObjId = new ObjectId(ingredient);
+      // Cast du filtre en any pour éviter l'erreur de typage
+      return await collection.find({ "ingredients.ingredientId": ingredientObjId } as any).toArray();
+    } catch (error) {
+      console.error("Erreur lors de la conversion de l'ID d'ingrédient en ObjectId:", error);
+      return [];
+    }
+  },
+  
+
   async insert(recipe: Omit<RecipeDBO, "_id" | "createdAt" | "updatedAt">) {
     const newRecipe: RecipeDBO = {
       ...recipe,
-      _id: new ObjectId(), 
+      _id: new ObjectId(),
       ingredients: recipe.ingredients.map((ing) => ({
         ingredientId: new ObjectId(ing.ingredientId),
         quantity: ing.quantity,
@@ -33,26 +51,24 @@ export const RecipeRepository = {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-  
-    await collection.insertOne(newRecipe);
-  
-    return { ...newRecipe, _id: newRecipe._id.toString() }; 
-  },
-  
 
+    await collection.insertOne(newRecipe);
+
+    return { ...newRecipe, _id: newRecipe._id.toString() };
+  },
 
   async update(id: string, data: Partial<RecipeDBO>) {
     try {
       const objectId = new ObjectId(id);
-      const { _id, ...updateData } = data; 
-  
+      const { _id, ...updateData } = data;
+
       if (updateData.ingredients) {
         updateData.ingredients = updateData.ingredients.map((ing) => ({
-          ingredientId: new ObjectId(ing.ingredientId), 
+          ingredientId: new ObjectId(ing.ingredientId),
           quantity: ing.quantity,
         }));
       }
-  
+
       return await collection.updateOne(
         { _id: objectId },
         { $set: updateData }
@@ -61,7 +77,7 @@ export const RecipeRepository = {
       console.error("Erreur lors de la conversion de l'ID en ObjectId:", error);
       return null;
     }
-  },  
+  },
 
   async delete(id: string) {
     try {
