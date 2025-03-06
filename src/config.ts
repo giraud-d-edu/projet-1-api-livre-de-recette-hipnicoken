@@ -1,9 +1,4 @@
-import { MongoClient, dotenv } from "../deps.ts";
-
-dotenv.config();
-
-const client = new MongoClient();
-await client.connect(Deno.env.get("MONGO_URI")!);
-const db = client.database(Deno.env.get("DB_NAME")!);
-
-export default db;
+export const config = {
+  MONGO_URI: "mongodb+srv://kenza:0000@projetrecettes.u3x4u.mongodb.net/recettes_db?retryWrites=true&w=majority&appName=projetrecettes",
+  MONGO_DB_NAME: "recettes_db",
+};

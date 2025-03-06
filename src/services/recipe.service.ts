@@ -1,6 +1,5 @@
 import { RecipeRepository } from "../repositories/recipe.repository.ts";
 import { RecipeDBO } from "../models/dbo/recipe.dbo.ts";
-import { ObjectId } from "../../deps.ts";
 
 export const RecipeService = {
   async getAll(filters: any = {}) {
@@ -11,19 +10,19 @@ export const RecipeService = {
     return await RecipeRepository.findById(id);
   },
 
-  async create(data: RecipeDBO) {
+  async getByTitle(title: string) {
+    return await RecipeRepository.findByTitle(title);
+  },
+
+  async create(data: Omit<RecipeDBO, "_id" | "createdAt" | "updatedAt">) {
     const existing = await RecipeRepository.findByTitle(data.title);
     if (existing) throw new Error("Cette recette existe déjà.");
 
-    data._id = new ObjectId().toString();
-    data.createdAt = new Date();
-    data.updatedAt = new Date();
-    return await RecipeRepository.insert(data);
+    return await RecipeRepository.insert(data); 
   },
 
   async update(id: string, data: Partial<RecipeDBO>) {
-    data.updatedAt = new Date();
-    return await RecipeRepository.update(id, data);
+    return await RecipeRepository.update(id, { ...data, updatedAt: new Date() });
   },
 
   async delete(id: string) {

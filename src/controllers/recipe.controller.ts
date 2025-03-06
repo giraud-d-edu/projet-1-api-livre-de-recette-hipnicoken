@@ -34,6 +34,10 @@ export const RecipeController = {
       _id: new ObjectId(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      ingredients: parsed.data.ingredients.map((ingredient: { ingredientId: string; quantity: string }) => ({
+        ...ingredient,
+        ingredientId: new ObjectId(ingredient.ingredientId),
+      })),
     };
 
     ctx.response.body = await RecipeService.create(recipeWithMeta);

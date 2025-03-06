@@ -1,4 +1,4 @@
-import db from "../db.ts";
+import { db } from "../db.ts";
 import { RecipeDBO } from "../models/dbo/recipe.dbo.ts";
 import { ObjectId } from "../../deps.ts";
 
@@ -11,7 +11,7 @@ export const RecipeRepository = {
 
   async findById(id: string) {
     try {
-      const objectId = new ObjectId(id); 
+      const objectId = new ObjectId(id);
       return await collection.findOne({ _id: objectId });
     } catch (error) {
       console.error("Erreur lors de la conversion de l'ID en ObjectId:", error);
@@ -19,50 +19,53 @@ export const RecipeRepository = {
     }
   },
 
-  async insert(recipe: RecipeDBO) {
-    const newRecipe = {
+  async findByTitle(title: string) {
+    return await collection.findOne({ title }); 
+  },
+  async insert(recipe: Omit<RecipeDBO, "_id" | "createdAt" | "updatedAt">) {
+    const newRecipe: RecipeDBO = {
       ...recipe,
       _id: new ObjectId(), 
       ingredients: recipe.ingredients.map((ing) => ({
-        ingredientId: new ObjectId(ing.ingredientId), 
+        ingredientId: new ObjectId(ing.ingredientId),
         quantity: ing.quantity,
       })),
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-
+  
     await collection.insertOne(newRecipe);
+  
     return { ...newRecipe, _id: newRecipe._id.toString() }; 
   },
+  
+
 
   async update(id: string, data: Partial<RecipeDBO>) {
     try {
       const objectId = new ObjectId(id);
-  
-      
-      const { _id, ...updateData } = data;
+      const { _id, ...updateData } = data; 
   
       if (updateData.ingredients) {
         updateData.ingredients = updateData.ingredients.map((ing) => ({
-          ingredientId: new ObjectId(ing.ingredientId),
+          ingredientId: new ObjectId(ing.ingredientId), 
           quantity: ing.quantity,
         }));
       }
   
       return await collection.updateOne(
         { _id: objectId },
-        { $set: updateData } 
+        { $set: updateData }
       );
     } catch (error) {
       console.error("Erreur lors de la conversion de l'ID en ObjectId:", error);
       return null;
     }
-  },
-  
+  },  
 
   async delete(id: string) {
     try {
-      const objectId = new ObjectId(id); 
+      const objectId = new ObjectId(id);
       return await collection.deleteOne({ _id: objectId });
     } catch (error) {
       console.error("Erreur lors de la conversion de l'ID en ObjectId:", error);

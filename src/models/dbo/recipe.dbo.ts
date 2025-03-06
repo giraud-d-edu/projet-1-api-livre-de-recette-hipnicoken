@@ -1,11 +1,11 @@
 import { ObjectId } from "../../../deps.ts";
 
 export interface RecipeDBO {
-  _id: ObjectId | string; // ✅ Correction ici pour MongoDB
+  _id: ObjectId; 
   title: string;
   description: string;
   category: "Entrée" | "Plat" | "Dessert";
-  ingredients: { ingredientId: ObjectId | string; quantity: string }[]; // ✅ Correction ici
+  ingredients: { ingredientId: ObjectId; quantity: string }[]; 
   instructions: string;
   createdAt: Date;
   updatedAt: Date;
