@@ -67,52 +67,74 @@ export const RecipeController = {
 
 
   async create(ctx: Context) {
-    const body = await ctx.request.body.json();
-
-    const parsed = RecipeSchema.safeParse(body);
-    if (!parsed.success) {
-      ctx.response.status = 400;
-      ctx.response.body = parsed.error;
-      return;
-    }
-
-    // Traiter chaque ingrédient en fonction de son nom ou de son id
-    const processedIngredients = await Promise.all(
-      parsed.data.ingredients.map(
-        async (ingredient: { ingredientName?: string; ingredientId?: string; quantity: string }) => {
-          if (ingredient.ingredientName) {
-            // Rechercher par nom ou créer l'ingrédient s'il n'existe pas
-            let existing = (await IngredientService.getAll()).find(i => i.name === ingredient.ingredientName);
-            if (!existing) {
-              existing = await IngredientService.create(ingredient.ingredientName);
+    try {
+      const body = await ctx.request.body.json();
+  
+      const parsed = RecipeSchema.safeParse(body);
+      if (!parsed.success) {
+        ctx.response.status = 400;
+        ctx.response.body = parsed.error;
+        return;
+      }
+  
+      // Vérifier si une recette avec le même titre existe déjà
+      const existingRecipe = await RecipeService.getByTitle(parsed.data.title);
+      if (existingRecipe) {
+        ctx.response.status = 409; // Code HTTP 409 Conflict
+        ctx.response.body = { error: "Cette recette existe déjà." };
+        return;
+      }
+  
+      // Traiter chaque ingrédient en fonction de son nom ou de son id
+      const processedIngredients = await Promise.all(
+        parsed.data.ingredients.map(
+          async (ingredient: { ingredientName?: string; ingredientId?: string; quantity: string }) => {
+            if (ingredient.ingredientName) {
+              // Rechercher par nom ou créer l'ingrédient s'il n'existe pas
+              let existing = (await IngredientService.getAll()).find(i => i.name === ingredient.ingredientName);
+              if (!existing) {
+                existing = await IngredientService.create(ingredient.ingredientName);
+              }
+              return {
+                ingredientId: new ObjectId(existing._id),
+                quantity: Number(ingredient.quantity),
+              };
+            } else if (ingredient.ingredientId) {
+              // Si l'id est déjà fourni, on le transforme en ObjectId
+              return {
+                ingredientId: new ObjectId(ingredient.ingredientId),
+                quantity: Number(ingredient.quantity),
+              };
+            } else {
+              throw new Error("Chaque ingrédient doit avoir soit 'ingredientId' soit 'ingredientName'.");
             }
-            return {
-              ingredientId: new ObjectId(existing._id),
-              quantity: Number(ingredient.quantity),
-            };
-          } else if (ingredient.ingredientId) {
-            // Si l'id est déjà fourni, on le transforme en ObjectId
-            return {
-              ingredientId: new ObjectId(ingredient.ingredientId),
-              quantity: Number(ingredient.quantity),
-            };
-          } else {
-            throw new Error("Chaque ingrédient doit avoir soit 'ingredientId' soit 'ingredientName'.");
           }
-        }
-      )
-    );
-
-    const recipeWithMeta = {
-      ...parsed.data,
-      _id: new ObjectId(),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      ingredients: processedIngredients,
-    };
-
-    ctx.response.body = await RecipeService.create(recipeWithMeta);
-  },
+        )
+      );
+  
+      const recipeWithMeta = {
+        ...parsed.data,
+        _id: new ObjectId(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        ingredients: processedIngredients,
+      };
+  
+      const createdRecipe = await RecipeService.create(recipeWithMeta);
+      ctx.response.body = createdRecipe;
+    } catch (error) {
+      console.error("Erreur lors de la création de la recette :", error);
+  
+      // Gestion des erreurs spécifiques
+      if (error instanceof Error && error.message.includes("existe déjà")) {
+        ctx.response.status = 409; // Conflict
+        ctx.response.body = { error: "Cette recette existe déjà." };
+      } else if (error instanceof Error) {
+        ctx.response.status = 500; // Erreur interne du serveur
+        ctx.response.body = { error: "Erreur interne du serveur", details: error.message };
+      }
+    }
+  },  
 
   async update(ctx: Context) {
     const id = ctx.request.url.searchParams.get("id");
