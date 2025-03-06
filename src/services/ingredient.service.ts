@@ -1,6 +1,5 @@
 import { IngredientRepository } from "../repositories/ingredient.repository.ts";
 import { RecipeRepository } from "../repositories/recipe.repository.ts";
-import { IngredientDBO } from "../models/dbo/ingredient.dbo.ts";
 
 export const IngredientService = {
   async getAll() {
@@ -15,19 +14,17 @@ export const IngredientService = {
     const exists = await IngredientRepository.findByName(name);
     if (exists) throw new Error("Cet ingrédient existe déjà.");
 
-    const ingredient: IngredientDBO = {
-      _id: "",
-      name,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-
-    return await IngredientRepository.insert(ingredient);
+    // On passe simplement le nom à la méthode d'insertion du repository,
+    // qui se chargera d'ajouter _id, createdAt et updatedAt.
+    return await IngredientRepository.insert({ name });
   },
 
   async delete(id: string) {
-    const recipesUsingIngredient = await RecipeRepository.findAll({ "ingredients.ingredientId": id });
-    if (recipesUsingIngredient.length > 0) throw new Error("Impossible de supprimer cet ingrédient, il est utilisé dans des recettes.");
+    const recipesUsingIngredient = await RecipeRepository.findAll({
+      "ingredients.ingredientId": id
+    });
+    if (recipesUsingIngredient.length > 0)
+      throw new Error("Impossible de supprimer cet ingrédient, il est utilisé dans des recettes.");
 
     return await IngredientRepository.delete(id);
   },

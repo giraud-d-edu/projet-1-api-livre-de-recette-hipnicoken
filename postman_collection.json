@@ -216,33 +216,27 @@
               }
             }
           },          
+          
           {
-            "name": "Créer une recette",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"title\": \"Lasagnes\",\n  \"description\": \"Plat de pâtes à la sauce tomate\",\n  \"category\": \"Plat\",\n  \"ingredients\": [\n    { \"ingredientId\": \"PUT_INGREDIENT_ID_HERE\", \"quantity\": 300 }\n  ],\n  \"instructions\": \"Préparez les ingrédients et faites cuire.\"\n}"
-              },
-              "url": {
-                "raw": "http://localhost:8000/recipes",
-                "protocol": "http",
-                "host": [
-                  "localhost"
-                ],
-                "port": "8000",
-                "path": [
-                  "recipes"
-                ]
-              }
+          "name": "Créer une recette ",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Risotto aux Champignons\",\n  \"description\": \"Un risotto crémeux avec des champignons frais.\",\n  \"category\": \"Plat\",\n  \"ingredients\": [\n    { \"ingredientName\": \"Champignons\", \"quantity\": \"200\" },\n    { \"ingredientName\": \"Riz Arborio\", \"quantity\": \"150\" },\n    { \"ingredientName\": \"Bouillon de légumes\", \"quantity\": \"500\" }\n  ],\n  \"instructions\": \"Faire revenir les champignons, ajouter le riz et déglacer avec le bouillon, puis laisser cuire en remuant.\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8000/recipes",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["recipes"]
             }
-          },
+          }
+        },
           {
             "name": "Modifier une recette",
             "request": {
