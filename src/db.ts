@@ -1,5 +1,7 @@
 import { MongoClient } from "npm:mongodb@6.1.0";
 import { config } from "../src/config.ts"; // Vérifie que l'import est correct
+// FIXME , a quoit sert le commentaire ?
+// TODO config.ts équivaut à ../src/config.ts
 
 export class MongoConnection {
     private static client: MongoClient;

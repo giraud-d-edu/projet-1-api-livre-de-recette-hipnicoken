@@ -86,6 +86,7 @@ export const RecipeController = {
       }
   
       // Traiter chaque ingrédient en fonction de son nom ou de son id
+      // TODO : Tout ceci est plus à mettre dans la couche service, & les Promise.all c'est pas très beau
       const processedIngredients = await Promise.all(
         parsed.data.ingredients.map(
           async (ingredient: { ingredientName?: string; ingredientId?: string; quantity: string }) => {
@@ -121,7 +122,7 @@ export const RecipeController = {
       };
   
       const createdRecipe = await RecipeService.create(recipeWithMeta);
-      ctx.response.body = createdRecipe;
+      ctx.response.body = createdRecipe;  // TODO il faut veiller à chaque fois à retourner un DTO
     } catch (error) {
       console.error("Erreur lors de la création de la recette :", error);
   

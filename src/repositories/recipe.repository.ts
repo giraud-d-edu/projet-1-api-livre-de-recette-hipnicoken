@@ -56,6 +56,7 @@ export const RecipeRepository = {
     return { ...newRecipe, _id: newRecipe._id.toString() };
   },
 
+  // TODO le repository doit recevoir un objet métier et c'ets ensuite lui qui va gérer la conversion en DBO (ce n'ets pas au service de le faire)
   async update(id: string, data: Partial<RecipeDBO>) {
     try {
       const objectId = new ObjectId(id);

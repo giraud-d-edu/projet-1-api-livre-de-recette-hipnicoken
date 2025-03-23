@@ -4,6 +4,8 @@ import recipeRoutes from "./src/routes/recipe.routes.ts";
 import ingredientRoutes from "./src/routes/ingredient.routes.ts"; // Ajout des routes ingrédients
 import { db } from "./src/db.ts"; // Importer la connexion à MongoDB
 
+// TODO mettre le main.ts et le depts.ts dans le dossier src
+
 const app = new Application();
 // 📌 Vérification de la connexion MongoDB avant de démarrer le serveur
 (async () => {

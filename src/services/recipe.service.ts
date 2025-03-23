@@ -41,7 +41,8 @@ export const RecipeService = {
   },
 
   async update(id: string, data: Partial<Recipe>): Promise<boolean> {
-    const result = await RecipeRepository.update(id, { ...data, updatedAt: new Date() });
+    const result = await RecipeRepository.update(id, { ...data, updatedAt: new Date() }); // TODO il faut MAJ les types ici
+    // TODO ici faire un findyBiId et renvoiyer le résulytat, c'ets bof de faire un boolean de retour
     return result !== null;
   },
 
