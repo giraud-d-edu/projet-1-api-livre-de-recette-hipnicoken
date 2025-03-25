@@ -29,6 +29,10 @@
   onMount(charger);
 </script>
 
+<style>
+ 
+</style>
+
 <h1>Liste des recettes</h1>
 
 {#if erreur}
@@ -36,16 +40,19 @@
 {/if}
 
 {#if recettes.length > 0}
-  <ul>
+  <div class="card-container">
     {#each recettes as recette}
-      <li>
-        <strong>{recette.title}</strong> — {recette.description}  
-        <button on:click={() => goto(`/recettes/${recette._id}`)}>Voir</button>
-        <button on:click={() => goto(`/recettes/${recette._id}/edit`)}>Modifier</button>
-        <button on:click={() => supprimer(recette._id)}>Supprimer</button>
-      </li>
+      <div class="card">
+        <h3>{recette.title}</h3>
+        <p>{recette.description}</p>
+        <div class="card-actions">
+          <button class="view" on:click={() => goto(`/recettes/${recette._id}`)}>Voir</button>
+          <button class="edit" on:click={() => goto(`/recettes/${recette._id}/edit`)}>Modifier</button>
+          <button class="delete" on:click={() => supprimer(recette._id)}>Supprimer</button>
+        </div>
+      </div>
     {/each}
-  </ul>
+  </div>
 {:else}
   <p>Aucune recette trouvée.</p>
 {/if}
