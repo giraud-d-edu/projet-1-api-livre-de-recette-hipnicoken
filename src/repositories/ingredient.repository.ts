@@ -1,6 +1,6 @@
 import { db } from "../db.ts";
 import { IngredientDBO } from "./dbo/ingredient.dbo.ts"; 
-import { ObjectId } from "../../deps.ts";
+import { ObjectId } from "../deps.ts";
 
 const collection = db.collection<IngredientDBO>("ingredients");
 
@@ -69,4 +69,16 @@ export const IngredientRepository = {
       throw new Error("Erreur interne lors de la suppression.");
     }
   },
+  async update(id: string, name: string) {
+    try {
+      const objectId = new ObjectId(id);
+      return await collection.updateOne(
+        { _id: objectId },
+        { $set: { name, updatedAt: new Date() } }
+      );
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour :", error);
+      return null;
+    }
+  },  
 };

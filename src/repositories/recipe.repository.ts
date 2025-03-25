@@ -1,6 +1,6 @@
 import { db } from "../db.ts";
 import { RecipeDBO } from "./dbo/recipe.dbo.ts";
-import { ObjectId } from "../../deps.ts";
+import { ObjectId } from "../deps.ts";
 
 const collection = db.collection<Omit<RecipeDBO, "_id"> & { _id?: ObjectId }>("recipes");
 

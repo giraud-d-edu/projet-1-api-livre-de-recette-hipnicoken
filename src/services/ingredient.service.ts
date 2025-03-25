@@ -22,7 +22,11 @@ export const IngredientService = {
 
     return await IngredientRepository.insert({ name });
   },
-
+  
+  async update(id: string, newName: string) {
+    return await IngredientRepository.update(id, newName);
+  },
+  
   async isIngredientUsed(id: string): Promise<boolean> {
     // Vérifie si l'ingrédient est utilisé dans au moins une recette
     const recipesUsingIngredient = await RecipeRepository.findAll({ "ingredients.ingredientId": id });

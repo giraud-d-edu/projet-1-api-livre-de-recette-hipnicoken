@@ -1,8 +1,8 @@
 import { Application } from "./deps.ts";
-import { config } from "./src/config.ts";
-import recipeRoutes from "./src/routes/recipe.routes.ts";
-import ingredientRoutes from "./src/routes/ingredient.routes.ts"; // Ajout des routes ingrédients
-import { db } from "./src/db.ts"; // Importer la connexion à MongoDB
+import { config } from "./config.ts";
+import recipeRoutes from "./routes/recipe.routes.ts";
+import ingredientRoutes from "./routes/ingredient.routes.ts"; 
+import { db } from "./db.ts"; 
 
 const app = new Application();
 // 📌 Vérification de la connexion MongoDB avant de démarrer le serveur
@@ -34,6 +34,19 @@ app.use(async (ctx, next) => {
     ctx.response.body = { error: "Erreur interne du serveur" };
   }
 });
+app.use(async (ctx, next) => {
+  ctx.response.headers.set("Access-Control-Allow-Origin", "*");
+  ctx.response.headers.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  ctx.response.headers.set("Access-Control-Allow-Headers", "Content-Type");
+
+  if (ctx.request.method === "OPTIONS") {
+    ctx.response.status = 204;
+    return;
+  }
+
+  await next();
+});
+
 
 // 📌 Utilisation des routes
 app.use(recipeRoutes.routes());

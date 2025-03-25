@@ -1,6 +1,6 @@
 import { IngredientService } from "../services/ingredient.service.ts";
 import { IngredientSchema } from "./dto/ingredient.dto.ts"; 
-import { Context } from "../../deps.ts";
+import { Context } from "../deps.ts";
 
 export const IngredientController = {
   async getAll(ctx: Context) {
@@ -89,6 +89,38 @@ export const IngredientController = {
       console.error("Erreur lors de la suppression de l'ingrédient :", error);
       ctx.response.status = 500;
       ctx.response.body = { error: "Erreur interne du serveur", details: (error as Error).message };
+    }
+  },
+  async update(ctx: Context) {
+    const id = ctx.request.url.searchParams.get("id");
+    if (!id) {
+      ctx.response.status = 400;
+      ctx.response.body = { error: "ID requis" };
+      return;
+    }
+  
+    try {
+      const body = await ctx.request.body.json();
+      const parsed = IngredientSchema.safeParse(body);
+  
+      if (!parsed.success) {
+        ctx.response.status = 400;
+        ctx.response.body = parsed.error;
+        return;
+      }
+  
+      const updated = await IngredientService.update(id, parsed.data.name);
+      if (!updated) {
+        ctx.response.status = 404;
+        ctx.response.body = { error: "Ingrédient non trouvé." };
+        return;
+      }
+  
+      ctx.response.body = { message: "Ingrédient mis à jour." };
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour :", error);
+      ctx.response.status = 500;
+      ctx.response.body = { error: "Erreur interne", details: (error as Error).message };
     }
   },
 };

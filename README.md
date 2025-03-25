@@ -19,7 +19,7 @@ Ce projet est une API de gestion de recettes de cuisine, développée dans le ca
 - **Newman** : Exécution automatisée des tests Postman.
 
 ## 📂 Structure du Projet
-
+```
 projet-1-api-livre-de-recette-hipnicoken/
 ├── src/
 │   ├── config.ts
@@ -51,7 +51,7 @@ projet-1-api-livre-de-recette-hipnicoken/
 ├── postman_collection.json
 ├── deno.lock
 ├── README.md
-
+```
 ## Installation
 
 1. **Cloner le dépôt :**

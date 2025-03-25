@@ -1,7 +1,7 @@
 import { RecipeService } from "../services/recipe.service.ts";
 import { RecipeSchema } from "./dto/recipe.dto.ts";
-import { Context } from "../../deps.ts";
-import { ObjectId } from "../../deps.ts";
+import { Context } from "../deps.ts";
+import { ObjectId } from "../deps.ts";
 import { IngredientService } from "../services/ingredient.service.ts";
 
 export const RecipeController = {

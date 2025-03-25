@@ -1,4 +1,4 @@
-import { Router } from "../../deps.ts";
+import { Router } from "../deps.ts";
 import { RecipeController } from "../controllers/recipe.controller.ts";
 
 const router = new Router();

@@ -1,4 +1,4 @@
-import { ObjectId } from "../../../deps.ts";
+import { ObjectId } from "../../deps.ts";
 
 export interface RecipeDBO {
   _id: ObjectId; 

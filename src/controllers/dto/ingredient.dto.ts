@@ -1,4 +1,4 @@
-import { z } from "../../../deps.ts";
+import { z } from "../../deps.ts";
 
 export const IngredientSchema = z.object({
   name: z.string().min(2),
