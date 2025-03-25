@@ -1,5 +1,5 @@
 import { MongoClient } from "npm:mongodb@6.1.0";
-import { config } from "../src/config.ts"; // Vérifie que l'import est correct
+import { config } from "./config.ts"; // Vérifie que l'import est correct
 
 export class MongoConnection {
     private static client: MongoClient;
