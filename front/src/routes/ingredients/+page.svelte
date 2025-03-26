@@ -30,6 +30,9 @@
   </script>
   
   <h1>Liste des ingrédients</h1>
+    <button on:click={() => goto('/ingredients/create')}>
+    ➕ Ajouter un ingrédient
+  </button>
   
   {#if erreur}
     <p style="color:red">{erreur}</p>
@@ -51,8 +54,4 @@
   {:else}
     <p>Aucun ingrédient trouvé.</p>
   {/if}
-  
-  <button on:click={() => goto('/ingredients/create')}>
-    ➕ Ajouter un ingrédient
-  </button>
   

@@ -118,20 +118,26 @@
 			background-color: #e76e3f;
 		}
 
-		input, textarea, select {
-			border : 1px solid #ccc;
+		input,
+		textarea,
+		select {
+			border: 1px solid #ccc;
 			background-color: #fff;
 			font-family: 'Poppins', sans-serif;
 			transition: border-color 0.3s, box-shadow 0.3s;
 		}
 
-		input:focus, textarea:focus, select:focus {
+		input:focus,
+		textarea:focus,
+		select:focus {
 			@apply outline-none;
 			border-color: var(--color-orange);
 			box-shadow: 0 0 0 2px rgba(255, 127, 80, 0.2);
 		}
 
-		input::placeholder, textarea::placeholder, select::placeholder {
+		input::placeholder,
+		textarea::placeholder,
+		select::placeholder {
 			color: #aaa;
 		}
 

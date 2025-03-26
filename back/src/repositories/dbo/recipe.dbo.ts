@@ -5,7 +5,7 @@ export interface RecipeDBO {
   title: string;
   description: string;
   category: "Entrée" | "Plat" | "Dessert";
-  ingredients: { ingredientId: ObjectId; quantity: number }[]; 
+  ingredients: { ingredientId: ObjectId; String: number }[]; 
   instructions: string;
   createdAt: Date;
   updatedAt: Date;
