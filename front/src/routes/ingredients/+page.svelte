@@ -36,16 +36,18 @@
   {/if}
   
   {#if ingredients.length > 0}
-    <ul>
+    <div class = "card-container">
       {#each ingredients as ingredient}
-        <li>
-          {ingredient.name}
-          <button on:click={() => goto(`/ingredients/${ingredient._id}`)}>Voir</button>
-          <button on:click={() => goto(`/ingredients/${ingredient._id}/edit`)}>Modifier</button>
-          <button on:click={() => supprimer(ingredient._id)}>Supprimer</button>
-        </li>
+        <div class = "card">
+          <h3>{ingredient.name}</h3>
+          <div class = "card-actions">
+            <button class="view" on:click={() => goto(`/ingredients/${ingredient._id}`)}>Voir</button>
+            <button class = "edit" on:click={() => goto(`/ingredients/${ingredient._id}/edit`)}>Modifier</button>
+            <button class = "delete" on:click={() => supprimer(ingredient._id)}>Supprimer</button>
+          </div>
+        </div>
       {/each}
-    </ul>
+    </div>
   {:else}
     <p>Aucun ingrédient trouvé.</p>
   {/if}

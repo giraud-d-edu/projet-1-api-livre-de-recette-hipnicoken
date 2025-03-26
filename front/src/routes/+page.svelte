@@ -48,7 +48,7 @@
 <h1>Recherche de recette par ID</h1>
 
 <form on:submit|preventDefault={rechercherParId}>
-  <input type="text" placeholder="ID de la recette" bind:value={rechercheId} />
+  <input class="block w-50 px-4 py-2 mb-3 border rounded-md" type="text" placeholder="ID de la recette" bind:value={rechercheId} />
   <button type="submit">Rechercher</button>
 </form>
 
