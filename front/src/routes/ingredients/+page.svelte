@@ -4,9 +4,9 @@
   import { goto } from '$app/navigation';
 
   let ingredients = [];
-  let ingredientsFiltres = []; // Ajout de la variable pour stocker les résultats filtrés
+  let ingredientsFiltres = []; 
   let erreur = '';
-  let recherche = ''; // Ajout de la variable pour le texte de recherche
+  let recherche = '';
 
   const charger = async () => {
     try {
@@ -41,11 +41,9 @@
   
 <div class="container mx-auto px-4 py-6">
   <h1 class="text-3xl font-bold text-center text-orange-500 mb-8">Liste des ingrédients</h1>
-  
-  <!-- Section de recherche et bouton -->
   <div class="max-w-4xl mx-auto mb-8">
     <div class="flex flex-col sm:flex-row gap-4 items-center mb-6">
-      <!-- Barre de recherche -->
+
       <div class="relative w-full">
         <input
           type="text"
@@ -58,8 +56,7 @@
           🔍
         </span>
       </div>
-      
-      <!-- Bouton d'ajout -->
+
       <button 
         on:click={() => goto('/ingredients/create')}
         class="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors w-full sm:w-auto whitespace-nowrap"
@@ -75,34 +72,31 @@
     {/if}
   </div>
   
-  <!-- Liste des ingrédients -->
   {#if ingredientsFiltres.length > 0}
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div class="card-container flex flex-wrap justify-center gap-8">
       {#each ingredientsFiltres as ingredient}
-        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-          <div class="p-5">
-            <h3 class="font-bold text-xl text-orange-500 mb-4">{ingredient.name}</h3>
-            
-            <div class="card-actions">
-              <button 
-                on:click={() => goto(`/ingredients/${ingredient._id}`)}
-                class="view"
-              >
-                Voir
-              </button>
-              <button 
-                on:click={() => goto(`/ingredients/${ingredient._id}/edit`)}
-                class="edit"
-              >
-                Modifier
-              </button>
-              <button 
-                on:click={() => supprimer(ingredient._id)}
-                class="delete"
-              >
-                Supprimer
-              </button>
-            </div>
+        <div class="card" style="min-width: 250px; max-width: 350px; margin-bottom: 1.5rem;">
+          <h3>{ingredient.name}</h3>
+          
+          <div class="card-actions">
+            <button 
+              on:click={() => goto(`/ingredients/${ingredient._id}`)}
+              class="view"
+            >
+              Voir
+            </button>
+            <button 
+              on:click={() => goto(`/ingredients/${ingredient._id}/edit`)}
+              class="edit"
+            >
+              Modifier
+            </button>
+            <button 
+              on:click={() => supprimer(ingredient._id)}
+              class="delete"
+            >
+              Supprimer
+            </button>
           </div>
         </div>
       {/each}
