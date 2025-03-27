@@ -3,10 +3,18 @@
   import { fetchRecettes, deleteRecette } from '$lib/services/api';
   import { goto } from '$app/navigation';
 
-  let recettes = [];
-  let recettesFiltrees = []; // Liste des recettes filtrées
+  interface Recette {
+    _id: string;
+    title: string;
+    description: string;
+    category: string;
+  }
+
+  let recettes: Recette[] = [];
+  let recettesFiltrees: Recette[] = []; // Liste des recettes filtrées
   let erreur = '';
   let recherche = ''; // Champ de recherche
+  let filtreCategorie = ''; // Filtre par catégorie
 
   const charger = async () => {
     try {
@@ -34,6 +42,14 @@
       erreur = 'Erreur lors de la suppression.';
       console.error(e);
     }
+  };
+
+  const filtrer = () => {
+    recettesFiltrees = recettes.filter((recette) => {
+      const matchTitre = recette.title.toLowerCase().includes(recherche.toLowerCase());
+      const matchCategorie = !filtreCategorie || recette.category === filtreCategorie;
+      return matchTitre && matchCategorie;
+    });
   };
 
   onMount(charger);
@@ -77,6 +93,12 @@
     on:input={rechercher}
     class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
   />
+  <select bind:value={filtreCategorie} on:change={filtrer} class="w-1/4">
+    <option value="">Toutes les catégories</option>
+    <option value="Entrée">Entrées</option>
+    <option value="Plat">Plats</option>
+    <option value="Dessert">Desserts</option>
+  </select>
 </div>
 
 <button
@@ -95,6 +117,7 @@
     {#each recettesFiltrees as recette}
       <div class="card">
         <h3>{recette.title}</h3>
+        <div class= "category-badge">{recette.category}</div>
         <p>{recette.description}</p>
         <div class="card-actions">
           <button class="view" on:click={() => goto(`/recettes/${recette._id}`)}>Voir</button>
