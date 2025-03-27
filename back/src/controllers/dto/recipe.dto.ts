@@ -1,5 +1,5 @@
 import { z } from "zod";
-
+import { CATEGORIES } from "../../constants/category.ts";
 // Définir un schéma pour un ingrédient qui accepte soit ingredientId, soit ingredientName
 export const IngredientDTO = z
   .object({
@@ -15,7 +15,7 @@ export const IngredientDTO = z
 export const RecipeSchema = z.object({
   title: z.string(),
   description: z.string(),
-  category: z.enum(["Entrée", "Plat", "Dessert"]),
+  category: z.enum(CATEGORIES),
   ingredients: z.array(IngredientDTO),
   instructions: z.string(),
 });

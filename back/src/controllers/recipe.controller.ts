@@ -143,38 +143,39 @@ export const RecipeController = {
       ctx.response.body = { error: "ID requis" };
       return;
     }
-
-    const body = await ctx.request.body.json();
-    const parsed = RecipeSchema.partial().safeParse(body);
-    if (!parsed.success) {
-      ctx.response.status = 400;
-      ctx.response.body = parsed.error;
-      return;
+  
+    try {
+      const body = await ctx.request.body.json();
+      const parsed = RecipeSchema.partial().safeParse(body);
+  
+      if (!parsed.success) {
+        ctx.response.status = 400;
+        ctx.response.body = parsed.error;
+        return;
+      }
+  
+      const updatedRecipe = await RecipeService.update(id, parsed.data);
+  
+      if (!updatedRecipe) {
+        ctx.response.status = 404;
+        ctx.response.body = { error: "Recette non trouvée" };
+        return;
+      }
+  
+      ctx.response.body = {
+        message: "Recette mise à jour.",
+        recipe: updatedRecipe,
+      };
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour :", error);
+      ctx.response.status = 500;
+      ctx.response.body = {
+        error: "Erreur interne du serveur",
+        details: (error as Error).message,
+      };
     }
-
-    const updatedData = {
-      ...parsed.data,
-      ingredients: parsed.data.ingredients?.map((ingredient) => {
-        if (!ingredient.ingredientId) {
-          throw new Error("Chaque ingrédient doit avoir un 'ingredientId'.");
-        }
-        return {
-          ...ingredient,
-          ingredientId: new ObjectId(ingredient.ingredientId),
-          quantity: String(ingredient.quantity),
-        };
-      }),
-    };
-
-    const updatedRecipe = await RecipeService.update(id, updatedData);
-    if (!updatedRecipe) {
-      ctx.response.status = 404;
-      ctx.response.body = { error: "Recette non trouvée" };
-      return;
-    }
-
-    ctx.response.body = { message: "Recette mise à jour.", recipe: updatedRecipe };
   },
+  
 
   async delete(ctx: Context) {
     const id = ctx.request.url.searchParams.get("id");

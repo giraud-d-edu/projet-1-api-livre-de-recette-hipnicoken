@@ -55,28 +55,35 @@ export const RecipeRepository = {
 
     return { ...newRecipe, _id: newRecipe._id.toString() };
   },
-
-  async update(id: string, data: Partial<RecipeDBO>) {
+// la désormais c'est le repository qui gère le tout et rien dans le service
+  async update(id: string, data: Partial<Recipe>) {
     try {
       const objectId = new ObjectId(id);
-      const { _id, ...updateData } = data;
-
-      if (updateData.ingredients) {
-        updateData.ingredients = updateData.ingredients.map((ing) => ({
+      const { _id, createdAt, updatedAt, ...safeData } = data;
+  
+      const updateData: any = {
+        ...safeData,
+        updatedAt: new Date(), // le repository s’en occupe
+      };
+  
+      if (safeData.ingredients) {
+        updateData.ingredients = safeData.ingredients.map((ing) => ({
           ingredientId: new ObjectId(ing.ingredientId),
-          quantity: ing.quantity,
+          quantity: Number(ing.quantity),
         }));
       }
-
-      return await collection.updateOne(
+  
+      const result = await collection.updateOne(
         { _id: objectId },
         { $set: updateData }
       );
+      return result;
     } catch (error) {
-      console.error("Erreur lors de la conversion de l'ID en ObjectId:", error);
+      console.error("Erreur update():", error);
       return null;
     }
   },
+  
 
   async delete(id: string) {
     try {

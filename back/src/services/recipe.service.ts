@@ -40,10 +40,13 @@ export const RecipeService = {
     return await RecipeRepository.insert(data);
   },
 
-  async update(id: string, data: Partial<Recipe>): Promise<boolean> {
-    const result = await RecipeRepository.update(id, { ...data, updatedAt: new Date() });
-    return result !== null;
+  async update(id: string, data: Partial<Recipe>): Promise<Recipe | null> {
+    const updated = await RecipeRepository.update(id, data);
+    if (!updated) return null;
+  
+    return await RecipeRepository.findById(id);
   },
+  
 
   async delete(id: string): Promise<boolean> {
     const result = await RecipeRepository.delete(id);
