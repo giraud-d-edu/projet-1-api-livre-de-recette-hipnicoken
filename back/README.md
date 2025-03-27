@@ -73,11 +73,14 @@ projet-1-api-livre-de-recette-hipnicoken/
 ## Utilisation
 
 1. **Lancer le serveur :**
+    
     deno run --allow-net --watch main.ts
 
     - `--allow-net`: Grants the application access to the network.
     - `--watch`: Automatically restarts the server when file changes are detected.
     ```bash
+    cd back
+    cd src
     deno run --allow-net --watch main.ts
     ```
 
