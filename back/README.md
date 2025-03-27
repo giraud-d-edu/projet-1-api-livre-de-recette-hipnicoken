@@ -73,7 +73,7 @@ projet-1-api-livre-de-recette-hipnicoken/
 1. **Lancer le serveur :**
 
     ```bash
-    deno main.ts
+    deno run --allow-net --watch main.ts
     ```
 
     Le serveur sera lancé sur `http://localhost:8000`.
