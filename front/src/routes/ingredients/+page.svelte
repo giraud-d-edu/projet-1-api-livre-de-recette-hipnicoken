@@ -77,32 +77,30 @@
   
   <!-- Liste des ingrédients -->
   {#if ingredientsFiltres.length > 0}
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div class="card-container flex flex-wrap justify-center gap-8">
       {#each ingredientsFiltres as ingredient}
-        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-          <div class="p-5">
-            <h3 class="font-bold text-xl text-orange-500 mb-4">{ingredient.name}</h3>
-            
-            <div class="card-actions">
-              <button 
-                on:click={() => goto(`/ingredients/${ingredient._id}`)}
-                class="view"
-              >
-                Voir
-              </button>
-              <button 
-                on:click={() => goto(`/ingredients/${ingredient._id}/edit`)}
-                class="edit"
-              >
-                Modifier
-              </button>
-              <button 
-                on:click={() => supprimer(ingredient._id)}
-                class="delete"
-              >
-                Supprimer
-              </button>
-            </div>
+        <div class="card" style="min-width: 250px; max-width: 350px; margin-bottom: 1.5rem;">
+          <h3>{ingredient.name}</h3>
+          
+          <div class="card-actions">
+            <button 
+              on:click={() => goto(`/ingredients/${ingredient._id}`)}
+              class="view"
+            >
+              Voir
+            </button>
+            <button 
+              on:click={() => goto(`/ingredients/${ingredient._id}/edit`)}
+              class="edit"
+            >
+              Modifier
+            </button>
+            <button 
+              on:click={() => supprimer(ingredient._id)}
+              class="delete"
+            >
+              Supprimer
+            </button>
           </div>
         </div>
       {/each}
