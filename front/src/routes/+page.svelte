@@ -64,11 +64,10 @@
       {#if recettes.length > 0}
         {#each recettes as recette}
           <div class="card">
-            <img src={recette.image} alt={recette.titre} style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;" />
-            <h3>{recette.titre}</h3>
+            <h3>{recette.title}</h3>
             <p>{recette.description}</p>
             <div class="card-actions">
-              <button class="view" on:click={() => goto(`/recettes/${recette.id}`)}>Voir la recette</button>
+              <button class="view" on:click={() => goto(`/recettes/${recette._id}`)}>Voir la recette</button>
             </div>
           </div>
         {/each}
