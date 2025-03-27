@@ -152,46 +152,54 @@ export const RecipeController = {
   },
 
   // ✅ PUT /recipes?id=...
-  async update(ctx: Context) {
-    const id = ctx.request.url.searchParams.get("id");
-    if (!id) {
+  // ✅ PUT /recipes?id=... → Mise à jour d'une recette
+async update(ctx: Context) {
+  // 🔎 Récupération de l'ID dans l'URL (query param ?id=...)
+  const id = ctx.request.url.searchParams.get("id");
+  if (!id) {
+    ctx.response.status = 400;
+    ctx.response.body = { error: "ID requis" };
+    return;
+  }
+
+  try {
+    // 📨 Lecture et parsing du corps de la requête
+    const body = await ctx.request.body.json();
+
+    // ✅ Validation partielle du corps avec Zod (autorise mise à jour partielle)
+    const parsed = RecipeSchema.partial().safeParse(body);
+    if (!parsed.success) {
       ctx.response.status = 400;
-      ctx.response.body = { error: "ID requis" };
+      ctx.response.body = parsed.error; // ✋ Erreur de validation
       return;
     }
 
-    try {
-      const body = await ctx.request.body.json();
-      const parsed = RecipeSchema.partial().safeParse(body);
+    // 🔁 Appel du service qui gère la mise à jour
+    const updatedRecipe = await RecipeService.update(id, parsed.data);
 
-      if (!parsed.success) {
-        ctx.response.status = 400;
-        ctx.response.body = parsed.error;
-        return;
-      }
-
-      // 🔁 Appel du service qui gère tout et retourne la recette mise à jour
-      const updatedRecipe = await RecipeService.update(id, parsed.data);
-
-      if (!updatedRecipe) {
-        ctx.response.status = 404;
-        ctx.response.body = { error: "Recette non trouvée" };
-        return;
-      }
-
-      ctx.response.body = {
-        message: "Recette mise à jour.",
-        recipe: updatedRecipe,
-      };
-    } catch (error) {
-      console.error("Erreur lors de la mise à jour :", error);
-      ctx.response.status = 500;
-      ctx.response.body = {
-        error: "Erreur interne du serveur",
-        details: (error as Error).message,
-      };
+    if (!updatedRecipe) {
+      // ❌ Si aucune recette n’a été trouvée ou modifiée
+      ctx.response.status = 404;
+      ctx.response.body = { error: "Recette non trouvée" };
+      return;
     }
-  },
+
+    // ✅ Recette mise à jour avec succès
+    ctx.response.body = {
+      message: "Recette mise à jour.",
+      recipe: updatedRecipe, // 🆕 On renvoie la recette complète modifiée
+    };
+  } catch (error) {
+    // ❗ Gestion des erreurs techniques
+    console.error("Erreur lors de la mise à jour :", error);
+    ctx.response.status = 500;
+    ctx.response.body = {
+      error: "Erreur interne du serveur",
+      details: (error as Error).message,
+    };
+  }
+},
+
 
   // ✅ DELETE /recipes?id=...
   async delete(ctx: Context) {
