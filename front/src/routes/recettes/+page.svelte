@@ -15,6 +15,8 @@
   let erreur = '';
   let recherche = '';
   let filtreCategorie = '';
+  let modeCookingParty = false;
+  let pizzaEmojis = [];
 
   const charger = async () => {
     try {
@@ -35,6 +37,10 @@
   };
 
   const rechercher = () => {
+    if (recherche.toLowerCase() === "pizza" && !modeCookingParty) {
+      activateCookingParty();
+    }
+    
     filtrer();
   };
 
@@ -50,10 +56,144 @@
     }
   };
 
-  onMount(charger);
+  // Créer la pluie d'emojis pizza
+  const createPizzaRain = () => {
+    pizzaEmojis = Array(50).fill(0).map(() => {
+      const size = Math.floor(Math.random() * 30) + 20;
+      const left = Math.random() * 100;
+      const animationDuration = Math.random() * 10 + 5; 
+      const animationDelay = Math.random() * 2;  
+      const opacity = Math.random() * 0.3 + 0.7;  
+      const rotation = Math.floor(Math.random() * 360);  
+      
+      return {
+        style: `
+          left: ${left}%;
+          font-size: ${size}px;
+          animation-duration: ${animationDuration}s;
+          animation-delay: -${animationDelay}s;
+          opacity: ${opacity};
+          transform: rotate(${rotation}deg);
+        `
+      };
+    });
+  };
+
+  // Activer le mode spécial
+  const activateCookingParty = () => {
+    modeCookingParty = true;
+    createPizzaRain();
+    
+    // Désactiver après 15 secondes
+    setTimeout(() => {
+      modeCookingParty = false;
+      pizzaEmojis = [];
+    }, 15000);
+  };
+
+  onMount(() => {
+    charger();
+
+    window.addEventListener('keydown', handleKeydown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeydown);
+    };
+  });
 </script>
 
-<div class="container mx-auto px-4 py-6">
+<style>
+
+  .cooking-party {
+    animation: discoBg 1.5s infinite;
+  }
+  
+  .cooking-party .card {
+    animation: dance 1s infinite alternate;
+    transition: all 0.3s ease;
+  }
+  
+  .cooking-party h1, .cooking-party h3 {
+    animation: rainbow 2s linear infinite;
+  }
+  
+  .cooking-party button {
+    animation: pulse 1s infinite alternate;
+  }
+  
+  @keyframes dance {
+    0% { transform: rotate(-2deg) translateY(0); }
+    50% { transform: rotate(0deg) translateY(-5px); }
+    100% { transform: rotate(2deg) translateY(0); }
+  }
+  
+  @keyframes rainbow {
+    0% { color: #ff0000; }
+    16.6% { color: #ff8800; }
+    33.3% { color: #ffff00; }
+    50% { color: #00ff00; }
+    66.6% { color: #0000ff; }
+    83.3% { color: #8800ff; }
+    100% { color: #ff0000; }
+  }
+  
+  @keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
+  }
+  
+  @keyframes discoBg {
+    0% { background-color: rgba(255, 200, 200, 0.1); }
+    33% { background-color: rgba(200, 255, 200, 0.1); }
+    66% { background-color: rgba(200, 200, 255, 0.1); }
+    100% { background-color: rgba(255, 200, 200, 0.1); }
+  }
+  
+  .easter-egg-message {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    z-index: 1000;
+    animation: slideUp 0.5s ease-out;
+    text-align: center;
+  }
+  
+  @keyframes slideUp {
+    from { transform: translate(-50%, 100px); opacity: 0; }
+    to { transform: translate(-50%, 0); opacity: 1; }
+  }
+  
+  .pizza-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 10;
+    pointer-events: none;
+  }
+  
+  .falling-pizza {
+    position: absolute;
+    top: -5%;
+    animation: pizzaRain linear infinite;
+    z-index: 10;
+    user-select: none;
+  }
+  
+  @keyframes pizzaRain {
+    0% { transform: translateY(-10vh) rotate(0deg); }
+    100% { transform: translateY(110vh) rotate(720deg); }
+  }
+</style>
+
+<div class={`container mx-auto px-4 py-6 ${modeCookingParty ? 'cooking-party' : ''}`}>
   <h1 class="text-3xl font-bold text-center text-orange-500 mb-8">Liste des recettes</h1>
 
   <div class="max-w-4xl mx-auto mb-8">
@@ -139,6 +279,20 @@
     <div class="text-center py-12 bg-gray-50 rounded-lg">
       <p class="text-gray-500 text-lg">Aucune recette trouvée.</p>
       <p class="text-gray-400 mt-2">Essayez avec un terme de recherche différent ou ajoutez une nouvelle recette.</p>
+    </div>
+  {/if}
+
+  {#if modeCookingParty}
+    <div class="pizza-container">
+      {#each pizzaEmojis as pizza}
+        <div class="falling-pizza" style={pizza.style}>🍕</div>
+      {/each}
+    </div>
+    
+
+    <div class="easter-egg-message">
+      <h3 class="font-bold mb-2">🍕 MODE PIZZA PARTY ACTIVÉ! 🍕</h3>
+      <p>Les recettes sont en train de faire la fête pendant 15 secondes! Profitez du spectacle!</p>
     </div>
   {/if}
 </div>

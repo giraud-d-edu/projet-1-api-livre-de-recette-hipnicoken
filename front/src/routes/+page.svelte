@@ -4,23 +4,19 @@
   import { onMount } from 'svelte';
 
   let recettes = [];
-
-  // Emojis liés à la cuisine
   const emojis = ['🍳', '🥘', '🍲', '🥗', '🍕', '🍔', '🥦', '🥕', '🍅', '🧁', '🍰', '🍎'];
   let emojiElements = [];
 
-  // Charger les données et initialiser les animations
   onMount(async () => {
     try {
       const allRecettes = await fetchRecettes();
-      recettes = allRecettes.slice(-3).reverse(); // Prendre les 3 dernières recettes
+      recettes = allRecettes.slice(-3).reverse(); 
     } catch (error) {
       console.error('Erreur lors du chargement des recettes :', error);
     }
     createEmojiRain();
   });
 
-  // Générer les émojis en arrière-plan
   function createEmojiRain() {
     emojiElements = Array(50).fill(0).map(() => {
       const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
@@ -45,7 +41,6 @@
 </script>
 
 <style>
-  /* Styles de base et de mise en page */
   .background-image {
     background-image: url('/cuisine.jpg'); 
     background-size: cover;
@@ -59,7 +54,6 @@
     z-index: -1; 
   }
 
-  /* Styles pour la pluie d'emoji */
   .emoji-container {
     position: absolute;
     top: 0;
@@ -85,7 +79,6 @@
     100% { transform: translateY(110vh) rotate(360deg); }
   }
 
-  /* Styles pour le titre magique */
   .magic-title {
     display: inline-block;
     position: relative;
@@ -127,7 +120,6 @@
     filter: saturate(1.5) brightness(1.2);
   }
 
-  /* Effets spéciaux du titre */
   .glow-effect {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -164,7 +156,6 @@
     animation: sparkleMove 5s linear infinite;
   }
 
-  /* Animations du titre */
   @keyframes crazyBounceIn {
     0% { opacity: 0; transform: scale(0.3) translateY(80px) rotateX(90deg); }
     30% { transform: scale(1.3) translateY(-30px) rotateX(-20deg); }
@@ -225,17 +216,14 @@
 </style>
 
 <div class="relative min-h-screen flex flex-col items-center justify-center text-white">
-  <!-- Arrière-plan -->
   <div class="background-image"></div>
   
-  <!-- Pluie d'emoji -->
   <div class="emoji-container">
     {#each emojiElements as item}
       <span class="falling-emoji" style={item.style}>{item.emoji}</span>
     {/each}
   </div>
 
-  <!-- Titre principal animé -->
   <div class="text-center mb-8">
     <h1 class="text-5xl font-bold mb-6 text-center drop-shadow-lg">
       <div class="magic-title">
@@ -252,7 +240,6 @@
     </p>
   </div>
 
-  <!-- Boutons d'action -->
   <div class="flex gap-4 mb-12">
     <button
       on:click={() => goto('/recettes')}
@@ -268,7 +255,6 @@
     </button>
   </div>
 
-  <!-- Section "Nos dernières recettes" -->
   <section class="w-full px-4 mb-12">
     <h2 class="text-3xl font-bold mb-6 text-center drop-shadow-lg">Nos dernières recettes</h2>
     <div class="card-container flex flex-wrap justify-center gap-6">

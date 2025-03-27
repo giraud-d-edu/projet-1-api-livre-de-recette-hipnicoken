@@ -18,8 +18,7 @@
   ];
   
   const conclusion = "Merci de visiter notre application. Bonne réflexion !";
-  
-  // Variables pour l'animation de frappe
+
   let visibleTexts = paragraphs.map(() => "");
   let visibleConclusion = "";
   let currentParagraph = 0;
@@ -27,13 +26,11 @@
   let typingInterval;
   let isTyping = true;
 
-  // Initialiser les animations
   onMount(() => {
     createEmojiRain();
     startTyping();
   });
 
-  // Générer les émojis en arrière-plan
   function createEmojiRain() {
     emojiElements = Array(50).fill(0).map(() => {
       const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
@@ -56,41 +53,37 @@
     });
   }
   
-  // Animation de frappe au clavier
   function startTyping() {
     typingInterval = setInterval(() => {
       if (currentParagraph < paragraphs.length) {
         if (currentChar < paragraphs[currentParagraph].length) {
-          // Ajouter une lettre au paragraphe actuel
           visibleTexts[currentParagraph] += paragraphs[currentParagraph][currentChar];
           currentChar++;
-          
-          // Ajouter un délai aléatoire pour un effet plus naturel
+
           if (Math.random() < 0.05) {
             clearInterval(typingInterval);
-            setTimeout(startTyping, 300); // Pause plus longue de temps en temps
+            setTimeout(startTyping, 300); 
           }
         } else {
-          // Passer au paragraphe suivant
+
           currentParagraph++;
           currentChar = 0;
           clearInterval(typingInterval);
-          setTimeout(startTyping, 800); // Pause plus longue entre les paragraphes
+          setTimeout(startTyping, 800); 
         }
       } else if (visibleConclusion.length < conclusion.length) {
-        // Taper la conclusion
+
         visibleConclusion += conclusion[visibleConclusion.length];
       } else {
-        // Animation terminée
+
         clearInterval(typingInterval);
         isTyping = false;
       }
-    }, 30); // Vitesse de frappe (30ms par caractère)
+    }, 30);
   }
 </script>
 
 <style>
-  /* Styles pour la pluie d'emoji */
   .emoji-container {
     position: fixed;
     top: 0;
@@ -115,14 +108,11 @@
     0% { transform: translateY(-10vh) rotate(0deg); }
     100% { transform: translateY(110vh) rotate(360deg); }
   }
-  
-  /* Style pour le contenu principal */
   .content-container {
     position: relative;
     z-index: 1;
   }
-  
-  /* Styles pour l'effet de frappe */
+ 
   .typing-paragraph {
     position: relative;
     min-height: 1.5em;
