@@ -97,13 +97,13 @@ export const RecipeController = {
               }
               return {
                 ingredientId: new ObjectId(existing._id),
-                quantity: Number(ingredient.quantity),
+                quantity: String(ingredient.quantity),
               };
             } else if (ingredient.ingredientId) {
               // Si l'id est déjà fourni, on le transforme en ObjectId
               return {
                 ingredientId: new ObjectId(ingredient.ingredientId),
-                quantity: Number(ingredient.quantity),
+                quantity: String(ingredient.quantity),
               };
             } else {
               throw new Error("Chaque ingrédient doit avoir soit 'ingredientId' soit 'ingredientName'.");
@@ -161,7 +161,7 @@ export const RecipeController = {
         return {
           ...ingredient,
           ingredientId: new ObjectId(ingredient.ingredientId),
-          quantity: Number(ingredient.quantity),
+          quantity: String(ingredient.quantity),
         };
       }),
     };

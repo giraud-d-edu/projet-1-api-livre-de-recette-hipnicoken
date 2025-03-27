@@ -38,24 +38,28 @@
   });
 </script>
 
-<h1>📄 Détail de la recette</h1>
+<h1 class="text-3xl font-bold text-center text-orange-500 mb-6">📄 Détail de la recette</h1>
 
 {#if erreur}
-  <p style="color:red">{erreur}</p>
+  <p class="text-red-500 text-center mb-4">{erreur}</p>
 {:else if recette}
-  <h2>{recette.title}</h2>
-  <p>{recette.description}</p>
+  <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">{recette.title}</h2>
+    <p class="text-gray-600 mb-4">{recette.description}</p>
 
-  <h3>Catégorie : {recette.category}</h3>
-  <h3>Instructions :</h3>
-  <p>{recette.instructions}</p>
+    <h3 class="text-lg font-semibold text-gray-700">Catégorie :</h3>
+    <p class="text-gray-600 mb-4">{recette.category}</p>
 
-  <h3>Ingrédients :</h3>
-  <ul>
-    {#each recette.ingredients as ingr}
-      <li>{ingr.name} — {ingr.quantity} g</li>
-    {/each}
-  </ul>
+    <h3 class="text-lg font-semibold text-gray-700">Instructions :</h3>
+    <p class="text-gray-600 mb-4">{recette.instructions}</p>
+
+    <h3 class="text-lg font-semibold text-gray-700">Ingrédients :</h3>
+    <ul class="list-disc pl-6">
+      {#each recette.ingredients as ingr}
+        <li class="text-gray-600">{ingr.name} — {ingr.quantity}</li>
+      {/each}
+    </ul>
+  </div>
 {:else}
-  <p>Chargement...</p>
+  <p class="text-gray-500 text-center">Chargement...</p>
 {/if}
